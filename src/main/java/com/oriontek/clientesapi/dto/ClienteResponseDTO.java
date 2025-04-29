@@ -1,27 +1,21 @@
 package com.oriontek.clientesapi.dto;
 
+import com.oriontek.clientesapi.entity.Cliente;
+
 import java.util.List;
 
 public class ClienteResponseDTO {
 
-    private int code;
-    private String nombre;
+    private Cliente cliente;
+    private boolean activo;
     private List<DireccionDTO> direcciones;
 
-    public int getCode() {
-        return code;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public List<DireccionDTO> getDirecciones() {
@@ -30,5 +24,13 @@ public class ClienteResponseDTO {
 
     public void setDirecciones(List<DireccionDTO> direcciones) {
         this.direcciones = direcciones;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 }
