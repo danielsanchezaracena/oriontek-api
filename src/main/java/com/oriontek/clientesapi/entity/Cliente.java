@@ -1,12 +1,19 @@
 package com.oriontek.clientesapi.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "cliente")
+@Data
+@NoArgsConstructor
+@RequiredArgsConstructor
 public class Cliente {
 
     @Id
@@ -14,6 +21,7 @@ public class Cliente {
     @Column(name = "id")
     private Long id;
 
+    @NonNull
     @Column(name = "nombre",nullable = false)
     private String nombre;
 
@@ -23,52 +31,4 @@ public class Cliente {
     @OneToMany(mappedBy = "cliente",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Direccion> direcciones= new ArrayList<>();
 
-    public Cliente() {
-    }
-
-    public Cliente(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public boolean isActivo() {
-        return activo;
-    }
-
-    public void setActivo(boolean activo) {
-        this.activo = activo;
-    }
-
-    public List<Direccion> getDirecciones() {
-        return direcciones;
-    }
-
-    public void setDirecciones(List<Direccion> direcciones) {
-        this.direcciones = direcciones;
-    }
-
-    @Override
-    public String toString() {
-        return "Cliente{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", activo=" + activo +
-                ", direcciones=" + direcciones +
-                '}';
-    }
 }
