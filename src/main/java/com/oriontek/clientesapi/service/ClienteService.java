@@ -13,7 +13,9 @@ public interface ClienteService {
 
  List<ClienteResponseDTO> getAllClientes();
 
+ void eliminarCliente(Long id);
 
+ ClienteResponseDTO modificarCliente(Long id,ClienteRequestDTO clienteRequestDTO);
 
 
 

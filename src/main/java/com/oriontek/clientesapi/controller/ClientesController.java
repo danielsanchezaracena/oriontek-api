@@ -34,7 +34,17 @@ public class ClientesController {
         return ResponseEntity.status(HttpStatus.OK).body(clienteService.getCliente(idcliente));
     }
 
+    @PutMapping("/clientes/{idcliente}")
+    public ResponseEntity<ClienteResponseDTO> modificarCliente(@PathVariable Long idcliente,@RequestBody ClienteRequestDTO request){
+       return ResponseEntity.status(HttpStatus.OK).body(clienteService.modificarCliente(idcliente,request));
+    }
 
+
+    @DeleteMapping("clientes/{idcliente}")
+    public ResponseEntity<?> eliminarCliente(@PathVariable Long idcliente){
+        clienteService.eliminarCliente(idcliente);
+        return ResponseEntity.ok().build();
+    }
 
 
 

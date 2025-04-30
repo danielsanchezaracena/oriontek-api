@@ -15,23 +15,23 @@ import java.util.Optional;
 @Service
 public class ClienteServiceImpl implements ClienteService{
 
-    private ClienteRepository clienteRepository;
+    private ClienteRepository repository;
     private ClienteUtils clienteUtils;
 
-    ClienteServiceImpl(ClienteRepository clienteRepository,ClienteUtils clienteUtils){
-        this.clienteRepository=clienteRepository;
+    ClienteServiceImpl(ClienteRepository repository, ClienteUtils clienteUtils){
+        this.repository = repository;
         this.clienteUtils=clienteUtils;
     }
 
     @Override
-    public ClienteResponseDTO crearCliente(ClienteRequestDTO cRequest) {
+    public ClienteResponseDTO crearCliente(ClienteRequestDTO request) {
 
-        ClienteResponseDTO cResponseDto=new ClienteResponseDTO();
+        ClienteResponseDTO response=new ClienteResponseDTO();
 
         Cliente cliente=new Cliente();
-        cliente.setNombre(cRequest.getNombre());
+        cliente.setNombre(request.getNombre());
         cliente.setActivo(true);
-        cliente.setDirecciones(cRequest.getDirecciones().stream().map(d->{
+        cliente.setDirecciones(request.getDirecciones().stream().map(d->{
             Direccion direccion=new Direccion();
             direccion.setDireccion(d.getDireccion());
             direccion.setCliente(cliente);
@@ -39,37 +39,34 @@ public class ClienteServiceImpl implements ClienteService{
             return direccion;
         }).toList());
 
-        Cliente nuevoCliente= clienteRepository.save(cliente);
+        Cliente nuevoCliente= repository.save(cliente);
 
-        cResponseDto.setNombre(cliente.getNombre());
-        cResponseDto.setDirecciones(clienteUtils.getDireccionesParaResponse(nuevoCliente));
-        cResponseDto.setActivo(cliente.isActivo());
+        response.setId(nuevoCliente.getId());
+        response.setNombre(cliente.getNombre());
+        response.setDirecciones(clienteUtils.getDireccionesParaResponse(nuevoCliente));
+        response.setActivo(cliente.isActivo());
 
-        return cResponseDto;
+        return response;
     }
 
     @Override
     public ClienteResponseDTO getCliente(Long id) {
 
-        ClienteResponseDTO clienteResponseDTO=new ClienteResponseDTO();
+        Optional<Cliente> optCliente= repository.findById(id);
 
-        Optional<Cliente> optCliente=clienteRepository.findById(id);
-
-        Cliente cliente=null;
-
-        if(optCliente.isPresent()){
-            cliente=optCliente.get();
+        if(optCliente.isEmpty()){
+            throw new RuntimeException("Cliente no encontrado");
         }
 
-        if(cliente==null){
-            throw new RuntimeException("Employee not found");
-        }
+        Cliente cliente=optCliente.get();
 
-        clienteResponseDTO.setNombre(cliente.getNombre());
-        clienteResponseDTO.setActivo(cliente.isActivo());
-        clienteResponseDTO.setDirecciones(clienteUtils.getDireccionesParaResponse(cliente));
+        ClienteResponseDTO response=new ClienteResponseDTO();
+        response.setId(cliente.getId());
+        response.setNombre(cliente.getNombre());
+        response.setActivo(cliente.isActivo());
+        response.setDirecciones(clienteUtils.getDireccionesParaResponse(cliente));
 
-        return clienteResponseDTO;
+        return response;
     }
 
     @Override
@@ -77,16 +74,47 @@ public class ClienteServiceImpl implements ClienteService{
 
         List<ClienteResponseDTO> clientes=new ArrayList<>();
 
-        clienteRepository.findAll().stream().forEach(c->{
-            ClienteResponseDTO cResponseDTO=new ClienteResponseDTO();
-            cResponseDTO.setNombre(c.getNombre());
-            cResponseDTO.setActivo(c.isActivo());
-            cResponseDTO.setDirecciones(clienteUtils.getDireccionesParaResponse(c));
-            clientes.add(cResponseDTO);
+        repository.findAll().stream().forEach(c->{
+            ClienteResponseDTO response=new ClienteResponseDTO();
+            response.setId(c.getId());
+            response.setNombre(c.getNombre());
+            response.setActivo(c.isActivo());
+            response.setDirecciones(clienteUtils.getDireccionesParaResponse(c));
+            clientes.add(response);
         });
 
         return clientes;
     }
+
+    @Override
+    public void eliminarCliente(Long id) {
+        repository.deleteById(id);
+    }
+
+    @Override
+    public ClienteResponseDTO modificarCliente(Long id, ClienteRequestDTO request) {
+
+        Optional<Cliente> optCliente= repository.findById(id);
+
+        if(optCliente.isEmpty()){
+            throw new RuntimeException("Cliente no encontrado");
+        }
+
+        Cliente cliente=optCliente.get();
+        cliente.setNombre(request.getNombre());
+
+        Cliente nuevoCliente = repository.save(cliente);
+
+        ClienteResponseDTO response=new ClienteResponseDTO();
+        response.setId(nuevoCliente.getId());
+        response.setNombre(nuevoCliente.getNombre());
+        response.setActivo(nuevoCliente.isActivo());
+        response.setDirecciones(clienteUtils.getDireccionesParaResponse(nuevoCliente));
+
+        return response;
+    }
+
+
 
 
 }
