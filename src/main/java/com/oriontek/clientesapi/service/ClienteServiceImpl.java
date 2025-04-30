@@ -7,7 +7,9 @@ import com.oriontek.clientesapi.entity.Direccion;
 import com.oriontek.clientesapi.exception.ClienteNoEncontradoException;
 import com.oriontek.clientesapi.repository.ClienteRepository;
 import com.oriontek.clientesapi.utils.ClienteUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,10 @@ public class ClienteServiceImpl implements ClienteService{
 
     @Override
     public ClienteResponseDTO crearCliente(ClienteRequestDTO request) {
+
+        if(clienteUtils.existeDireccionesEnBlanco(request.getDirecciones())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"No puede haber direcciones en blanco.");
+        }
 
         ClienteResponseDTO response=new ClienteResponseDTO();
 
@@ -106,6 +112,10 @@ public class ClienteServiceImpl implements ClienteService{
 
         if(optCliente.isEmpty()){
             throw new ClienteNoEncontradoException("Cliente no encontrado con el id:"+id);
+        }
+
+        if(clienteUtils.existeDireccionesEnBlanco(request.getDirecciones())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"No puede haber direcciones en blanco.");
         }
 
         Cliente cliente=optCliente.get();

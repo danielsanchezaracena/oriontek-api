@@ -1,5 +1,6 @@
 package com.oriontek.clientesapi.utils;
 
+import com.oriontek.clientesapi.dto.DireccionRequestDTO;
 import com.oriontek.clientesapi.dto.DireccionResponseDTO;
 import com.oriontek.clientesapi.entity.Cliente;
 import org.springframework.stereotype.Component;
@@ -17,5 +18,9 @@ public class ClienteUtils {
             dDTO.setId(d.getId());
             return dDTO;
         }).toList();
+    }
+
+    public boolean existeDireccionesEnBlanco(List<DireccionRequestDTO> dirDTOList){
+        return dirDTOList.stream().anyMatch(d->d.getDireccion().isBlank());
     }
 }
