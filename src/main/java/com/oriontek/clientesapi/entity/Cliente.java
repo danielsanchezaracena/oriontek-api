@@ -14,10 +14,10 @@ public class Cliente {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "nombre")
+    @Column(name = "nombre",nullable = false)
     private String nombre;
 
-    @Column(name = "activo")
+    @Column(name = "activo",columnDefinition = "boolean default true",nullable = false)
     private boolean activo;
 
     @OneToMany(mappedBy = "cliente",cascade = CascadeType.ALL,orphanRemoval = true)
@@ -60,5 +60,15 @@ public class Cliente {
 
     public void setDirecciones(List<Direccion> direcciones) {
         this.direcciones = direcciones;
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", activo=" + activo +
+                ", direcciones=" + direcciones +
+                '}';
     }
 }

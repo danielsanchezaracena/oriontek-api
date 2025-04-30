@@ -12,10 +12,10 @@ public class Direccion {
     private Long id;
 
 
-    @Column(name = "direccion")
+    @Column(name = "direccion",nullable = false)
     private String direccion;
 
-    @Column(name = "activo")
+    @Column(name = "activo",columnDefinition = "boolean default true",nullable = false)
     private boolean activo;
 
     @ManyToOne

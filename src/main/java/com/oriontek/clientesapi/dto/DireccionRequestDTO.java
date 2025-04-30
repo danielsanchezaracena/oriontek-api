@@ -1,6 +1,6 @@
 package com.oriontek.clientesapi.dto;
 
-public class DireccionDTO {
+public class DireccionRequestDTO {
 
     private String direccion;
 
