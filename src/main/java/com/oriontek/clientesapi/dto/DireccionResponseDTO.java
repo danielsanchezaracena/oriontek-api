@@ -1,7 +1,5 @@
 package com.oriontek.clientesapi.dto;
 
-import java.util.List;
-
 public class DireccionResponseDTO {
 
     private Long id;

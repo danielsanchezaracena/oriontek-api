@@ -4,6 +4,7 @@ import com.oriontek.clientesapi.dto.ClienteRequestDTO;
 import com.oriontek.clientesapi.dto.ClienteResponseDTO;
 import com.oriontek.clientesapi.entity.Cliente;
 import com.oriontek.clientesapi.entity.Direccion;
+import com.oriontek.clientesapi.exception.ClienteNoEncontradoException;
 import com.oriontek.clientesapi.repository.ClienteRepository;
 import com.oriontek.clientesapi.utils.ClienteUtils;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,8 @@ import java.util.Optional;
 @Service
 public class ClienteServiceImpl implements ClienteService{
 
-    private ClienteRepository repository;
-    private ClienteUtils clienteUtils;
+    private final ClienteRepository repository;
+    private final ClienteUtils clienteUtils;
 
     ClienteServiceImpl(ClienteRepository repository, ClienteUtils clienteUtils){
         this.repository = repository;
@@ -55,7 +56,7 @@ public class ClienteServiceImpl implements ClienteService{
         Optional<Cliente> optCliente= repository.findById(id);
 
         if(optCliente.isEmpty()){
-            throw new RuntimeException("Cliente no encontrado");
+            throw new ClienteNoEncontradoException("Cliente no encontrado con el id:"+id);
         }
 
         Cliente cliente=optCliente.get();
@@ -74,7 +75,7 @@ public class ClienteServiceImpl implements ClienteService{
 
         List<ClienteResponseDTO> clientes=new ArrayList<>();
 
-        repository.findAll().stream().forEach(c->{
+        repository.findAll().forEach(c->{
             ClienteResponseDTO response=new ClienteResponseDTO();
             response.setId(c.getId());
             response.setNombre(c.getNombre());
@@ -88,7 +89,14 @@ public class ClienteServiceImpl implements ClienteService{
 
     @Override
     public void eliminarCliente(Long id) {
-        repository.deleteById(id);
+
+        Optional<Cliente> optCliente=repository.findById(id);
+
+        if(optCliente.isEmpty()){
+            throw new ClienteNoEncontradoException("Cliente no encontrado con el id:"+id);
+        }
+
+        repository.delete(optCliente.get());
     }
 
     @Override
@@ -97,7 +105,7 @@ public class ClienteServiceImpl implements ClienteService{
         Optional<Cliente> optCliente= repository.findById(id);
 
         if(optCliente.isEmpty()){
-            throw new RuntimeException("Cliente no encontrado");
+            throw new ClienteNoEncontradoException("Cliente no encontrado con el id:"+id);
         }
 
         Cliente cliente=optCliente.get();

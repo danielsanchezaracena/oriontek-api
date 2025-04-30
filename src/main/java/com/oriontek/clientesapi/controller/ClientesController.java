@@ -5,7 +5,6 @@ import com.oriontek.clientesapi.dto.ClienteResponseDTO;
 import com.oriontek.clientesapi.service.ClienteService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class ClientesController {
 
-    private ClienteService clienteService;
+    private final ClienteService clienteService;
 
     ClientesController(ClienteService clienteService){
         this.clienteService=clienteService;
