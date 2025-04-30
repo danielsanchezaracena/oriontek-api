@@ -4,12 +4,13 @@ API para el control de los clientes de Oriontek.
 ## Instalación
 
 1. Clona el repositorio.
-2. Corre el script de DB encontrado en el folder sql-scripts.
-3. Ten en cuenta que la clave provisional para todos los usuarios es Test123.
-4. Recuerda cambiar la url, user y el password de tu conexion de base de datos en application.properties.
-5. Sube el proyecto.
-6. Abre Postman.
-7. Ya puedes probar la API utilizando Basic Authentication.
+2. Cambiate al branch de develop.
+3. Corre el script de DB encontrado en el folder sql-scripts.
+4. Ten en cuenta que la clave provisional para todos los usuarios es Test123.
+5. Recuerda cambiar la url, user y el password de tu conexion de base de datos en application.properties.
+6. Sube el proyecto.
+7. Abre Postman.
+8. Ya puedes probar la API utilizando Basic Authentication.
 
 ## Bcrypt
 
